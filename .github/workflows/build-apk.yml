@@ -29,7 +29,6 @@ jobs:
 
       - name: Generate Android Project
         run: |
-          # Create project structure
           mkdir -p app/src/main/java/com/aikeyboard/pro
           mkdir -p app/src/main/res/layout
           mkdir -p app/src/main/res/values
@@ -37,7 +36,6 @@ jobs:
           mkdir -p app/src/main/res/drawable
           mkdir -p gradle/wrapper
 
-          # Root build.gradle
           cat > build.gradle << 'EOFROOT'
           plugins {
               id 'com.android.application' version '8.2.0' apply false
@@ -45,7 +43,6 @@ jobs:
           }
           EOFROOT
 
-          # settings.gradle
           cat > settings.gradle << 'EOFSET'
           pluginManagement {
               repositories {
@@ -65,7 +62,6 @@ jobs:
           include ':app'
           EOFSET
 
-          # gradle.properties
           cat > gradle.properties << 'EOFPROP'
           org.gradle.jvmargs=-Xmx2048m -Dfile.encoding=UTF-8
           android.useAndroidX=true
@@ -73,7 +69,6 @@ jobs:
           android.nonTransitiveRClass=true
           EOFPROP
 
-          # gradle wrapper properties
           cat > gradle/wrapper/gradle-wrapper.properties << 'EOFWRAP'
           distributionBase=GRADLE_USER_HOME
           distributionPath=wrapper/dists
@@ -84,7 +79,6 @@ jobs:
           zipStorePath=wrapper/dists
           EOFWRAP
 
-          # App build.gradle
           cat > app/build.gradle << 'EOFAPP'
           plugins {
               id 'com.android.application'
@@ -122,7 +116,6 @@ jobs:
           }
           EOFAPP
 
-          # AndroidManifest.xml
           cat > app/src/main/AndroidManifest.xml << 'EOFMAN'
           <?xml version="1.0" encoding="utf-8"?>
           <manifest xmlns:android="http://schemas.android.com/apk/res/android"
@@ -155,7 +148,6 @@ jobs:
           </manifest>
           EOFMAN
 
-          # method.xml
           mkdir -p app/src/main/res/xml
           cat > app/src/main/res/xml/method.xml << 'EOFXML'
           <?xml version="1.0" encoding="utf-8"?>
@@ -169,7 +161,6 @@ jobs:
           </input-method>
           EOFXML
 
-          # Colors
           mkdir -p app/src/main/res/values
           cat > app/src/main/res/values/colors.xml << 'EOFCOL'
           <?xml version="1.0" encoding="utf-8"?>
@@ -186,7 +177,6 @@ jobs:
           </resources>
           EOFCOL
 
-          # Strings
           cat > app/src/main/res/values/strings.xml << 'EOFSTR'
           <?xml version="1.0" encoding="utf-8"?>
           <resources>
@@ -195,7 +185,6 @@ jobs:
           </resources>
           EOFSTR
 
-          # Styles
           cat > app/src/main/res/values/styles.xml << 'EOFSTY'
           <?xml version="1.0" encoding="utf-8"?>
           <resources>
@@ -206,7 +195,6 @@ jobs:
           </resources>
           EOFSTY
 
-          # Drawables
           mkdir -p app/src/main/res/drawable
           cat > app/src/main/res/drawable/key_bg_normal.xml << 'EOF'
           <?xml version="1.0" encoding="utf-8"?>
@@ -273,7 +261,6 @@ jobs:
           </shape>
           EOF
 
-          # Layouts
           mkdir -p app/src/main/res/layout
           cat > app/src/main/res/layout/keyboard_layout.xml << 'EOFLAY'
           <?xml version="1.0" encoding="utf-8"?>
@@ -368,7 +355,6 @@ jobs:
           </LinearLayout>
           EOFACT
 
-          # Kotlin files
           cat > app/src/main/java/com/aikeyboard/pro/MainActivity.kt << 'EOFMAIN'
           package com.aikeyboard.pro
           import android.content.Intent
@@ -516,7 +502,6 @@ jobs:
           }
           EOFKEY
 
-          # Generate gradlew
           gradle wrapper --gradle-version 8.5
           chmod +x gradlew
 
@@ -538,13 +523,3 @@ jobs:
         with:
           name: ai-keyboard-pro-apk
           path: app/build/outputs/apk/debug/*.apk
-
-      - name: Create GitHub Release
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: v1.0.${{ github.run_number }}
-          name: AI Keyboard Pro v1.0.${{ github.run_number }}
-          files: app/build/outputs/apk/debug/*.apk
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
