@@ -3,8 +3,6 @@ name: Generate Android APK for AI Keyboard
 on:
   push:
     branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
   workflow_dispatch:
 
 jobs:
@@ -29,18 +27,511 @@ jobs:
         with:
           gradle-version: '8.5'
 
+      - name: Generate Android Project
+        run: |
+          # Create project structure
+          mkdir -p app/src/main/java/com/aikeyboard/pro
+          mkdir -p app/src/main/res/layout
+          mkdir -p app/src/main/res/values
+          mkdir -p app/src/main/res/xml
+          mkdir -p app/src/main/res/drawable
+          mkdir -p gradle/wrapper
+
+          # Root build.gradle
+          cat > build.gradle << 'EOFROOT'
+          plugins {
+              id 'com.android.application' version '8.2.0' apply false
+              id 'org.jetbrains.kotlin.android' version '1.9.20' apply false
+          }
+          EOFROOT
+
+          # settings.gradle
+          cat > settings.gradle << 'EOFSET'
+          pluginManagement {
+              repositories {
+                  google()
+                  mavenCentral()
+                  gradlePluginPortal()
+              }
+          }
+          dependencyResolutionManagement {
+              repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+              repositories {
+                  google()
+                  mavenCentral()
+              }
+          }
+          rootProject.name = "AI-Keyboard-Pro"
+          include ':app'
+          EOFSET
+
+          # gradle.properties
+          cat > gradle.properties << 'EOFPROP'
+          org.gradle.jvmargs=-Xmx2048m -Dfile.encoding=UTF-8
+          android.useAndroidX=true
+          kotlin.code.style=official
+          android.nonTransitiveRClass=true
+          EOFPROP
+
+          # gradle wrapper properties
+          cat > gradle/wrapper/gradle-wrapper.properties << 'EOFWRAP'
+          distributionBase=GRADLE_USER_HOME
+          distributionPath=wrapper/dists
+          distributionUrl=https\://services.gradle.org/distributions/gradle-8.5-bin.zip
+          networkTimeout=10000
+          validateDistributionUrl=true
+          zipStoreBase=GRADLE_USER_HOME
+          zipStorePath=wrapper/dists
+          EOFWRAP
+
+          # App build.gradle
+          cat > app/build.gradle << 'EOFAPP'
+          plugins {
+              id 'com.android.application'
+              id 'org.jetbrains.kotlin.android'
+          }
+          android {
+              namespace 'com.aikeyboard.pro'
+              compileSdk 34
+              defaultConfig {
+                  applicationId "com.aikeyboard.pro"
+                  minSdk 24
+                  targetSdk 34
+                  versionCode 1
+                  versionName "1.0.0-AI"
+              }
+              buildTypes {
+                  release {
+                      minifyEnabled false
+                      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+                  }
+              }
+              compileOptions {
+                  sourceCompatibility JavaVersion.VERSION_17
+                  targetCompatibility JavaVersion.VERSION_17
+              }
+              kotlinOptions {
+                  jvmTarget = '17'
+              }
+          }
+          dependencies {
+              implementation 'androidx.core:core-ktx:1.12.0'
+              implementation 'androidx.appcompat:appcompat:1.6.1'
+              implementation 'com.google.android.material:material:1.11.0'
+              implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+          }
+          EOFAPP
+
+          # AndroidManifest.xml
+          cat > app/src/main/AndroidManifest.xml << 'EOFMAN'
+          <?xml version="1.0" encoding="utf-8"?>
+          <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+              package="com.aikeyboard.pro">
+              <application
+                  android:allowBackup="true"
+                  android:label="@string/app_name"
+                  android:supportsRtl="true"
+                  android:theme="@style/Theme.AIKeyboardPro">
+                  <activity
+                      android:name=".MainActivity"
+                      android:exported="true">
+                      <intent-filter>
+                          <action android:name="android.intent.action.MAIN" />
+                          <category android:name="android.intent.category.LAUNCHER" />
+                      </intent-filter>
+                  </activity>
+                  <service
+                      android:name=".KeyboardService"
+                      android:permission="android.permission.BIND_INPUT_METHOD"
+                      android:exported="true">
+                      <intent-filter>
+                          <action android:name="android.view.InputMethod" />
+                      </intent-filter>
+                      <meta-data
+                          android:name="android.view.im"
+                          android:resource="@xml/method" />
+                  </service>
+              </application>
+          </manifest>
+          EOFMAN
+
+          # method.xml
+          mkdir -p app/src/main/res/xml
+          cat > app/src/main/res/xml/method.xml << 'EOFXML'
+          <?xml version="1.0" encoding="utf-8"?>
+          <input-method xmlns:android="http://schemas.android.com/apk/res/android"
+              android:settingsActivity="com.aikeyboard.pro.MainActivity">
+              <subtype
+                  android:label="AI Keyboard Pro"
+                  android:languageTag="en"
+                  android:imeSubtypeLocale="en_US"
+                  android:imeSubtypeMode="keyboard" />
+          </input-method>
+          EOFXML
+
+          # Colors
+          mkdir -p app/src/main/res/values
+          cat > app/src/main/res/values/colors.xml << 'EOFCOL'
+          <?xml version="1.0" encoding="utf-8"?>
+          <resources>
+              <color name="key_bg">#E8E8E8</color>
+              <color name="key_bg_pressed">#B0B0B0</color>
+              <color name="key_bg_special">#D1D5DB</color>
+              <color name="key_bg_ai">#3B82F6</color>
+              <color name="key_text">#1F2937</color>
+              <color name="key_text_light">#FFFFFF</color>
+              <color name="keyboard_bg">#F3F4F6</color>
+              <color name="suggestion_text">#374151</color>
+              <color name="accent_purple">#7B2CBF</color>
+          </resources>
+          EOFCOL
+
+          # Strings
+          cat > app/src/main/res/values/strings.xml << 'EOFSTR'
+          <?xml version="1.0" encoding="utf-8"?>
+          <resources>
+              <string name="app_name">AI Keyboard Pro</string>
+              <string name="ai_status">AI Assistant Active</string>
+          </resources>
+          EOFSTR
+
+          # Styles
+          cat > app/src/main/res/values/styles.xml << 'EOFSTY'
+          <?xml version="1.0" encoding="utf-8"?>
+          <resources>
+              <style name="Theme.AIKeyboardPro" parent="Theme.Material3.DayNight.NoActionBar">
+                  <item name="colorPrimary">@color/accent_purple</item>
+                  <item name="android:windowBackground">@color/keyboard_bg</item>
+              </style>
+          </resources>
+          EOFSTY
+
+          # Drawables
+          mkdir -p app/src/main/res/drawable
+          cat > app/src/main/res/drawable/key_bg_normal.xml << 'EOF'
+          <?xml version="1.0" encoding="utf-8"?>
+          <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+              <solid android:color="@color/key_bg" />
+              <corners android:radius="8dp" />
+          </shape>
+          EOF
+          cat > app/src/main/res/drawable/key_bg_pressed.xml << 'EOF'
+          <?xml version="1.0" encoding="utf-8"?>
+          <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+              <solid android:color="@color/key_bg_pressed" />
+              <corners android:radius="8dp" />
+          </shape>
+          EOF
+          cat > app/src/main/res/drawable/key_bg_special.xml << 'EOF'
+          <?xml version="1.0" encoding="utf-8"?>
+          <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+              <solid android:color="@color/key_bg_special" />
+              <corners android:radius="8dp" />
+          </shape>
+          EOF
+          cat > app/src/main/res/drawable/key_bg_ai.xml << 'EOF'
+          <?xml version="1.0" encoding="utf-8"?>
+          <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+              <gradient android:startColor="#3B82F6" android:endColor="#7B2CBF" android:angle="135" />
+              <corners android:radius="8dp" />
+          </shape>
+          EOF
+          cat > app/src/main/res/drawable/key_selector.xml << 'EOF'
+          <?xml version="1.0" encoding="utf-8"?>
+          <selector xmlns:android="http://schemas.android.com/apk/res/android">
+              <item android:state_pressed="true" android:drawable="@drawable/key_bg_pressed" />
+              <item android:drawable="@drawable/key_bg_normal" />
+          </selector>
+          EOF
+          cat > app/src/main/res/drawable/key_selector_special.xml << 'EOF'
+          <?xml version="1.0" encoding="utf-8"?>
+          <selector xmlns:android="http://schemas.android.com/apk/res/android">
+              <item android:state_pressed="true" android:drawable="@drawable/key_bg_pressed" />
+              <item android:drawable="@drawable/key_bg_special" />
+          </selector>
+          EOF
+          cat > app/src/main/res/drawable/key_selector_ai.xml << 'EOF'
+          <?xml version="1.0" encoding="utf-8"?>
+          <selector xmlns:android="http://schemas.android.com/apk/res/android">
+              <item android:state_pressed="true" android:drawable="@drawable/key_bg_pressed" />
+              <item android:drawable="@drawable/key_bg_ai" />
+          </selector>
+          EOF
+          cat > app/src/main/res/drawable/suggestion_chip_bg.xml << 'EOF'
+          <?xml version="1.0" encoding="utf-8"?>
+          <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+              <solid android:color="#F3F4F6" />
+              <corners android:radius="16dp" />
+              <stroke android:width="1dp" android:color="#E5E7EB" />
+          </shape>
+          EOF
+          cat > app/src/main/res/drawable/ai_dot.xml << 'EOF'
+          <?xml version="1.0" encoding="utf-8"?>
+          <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
+              <solid android:color="#00FF88" />
+              <size android:width="8dp" android:height="8dp" />
+          </shape>
+          EOF
+
+          # Layouts
+          mkdir -p app/src/main/res/layout
+          cat > app/src/main/res/layout/keyboard_layout.xml << 'EOFLAY'
+          <?xml version="1.0" encoding="utf-8"?>
+          <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/keyboard_container"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:background="@color/keyboard_bg"
+              android:padding="4dp">
+              <LinearLayout
+                  android:id="@+id/ai_status_bar"
+                  android:layout_width="match_parent"
+                  android:layout_height="32dp"
+                  android:orientation="horizontal"
+                  android:gravity="center"
+                  android:background="#E0F2FE"
+                  android:paddingHorizontal="12dp">
+                  <View
+                      android:layout_width="8dp"
+                      android:layout_height="8dp"
+                      android:background="@drawable/ai_dot"
+                      android:layout_marginEnd="8dp" />
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="@string/ai_status"
+                      android:textSize="12sp"
+                      android:textColor="#059669" />
+              </LinearLayout>
+              <HorizontalScrollView
+                  android:id="@+id/suggestions_scroll"
+                  android:layout_width="match_parent"
+                  android:layout_height="42dp"
+                  android:background="#FFFFFF"
+                  android:scrollbars="none"
+                  android:paddingHorizontal="4dp">
+                  <LinearLayout
+                      android:id="@+id/suggestions_container"
+                      android:layout_width="wrap_content"
+                      android:layout_height="match_parent"
+                      android:orientation="horizontal"
+                      android:gravity="center_vertical"
+                      android:padding="4dp" />
+              </HorizontalScrollView>
+              <HorizontalScrollView
+                  android:layout_width="match_parent"
+                  android:layout_height="36dp"
+                  android:background="#F8FAFC"
+                  android:scrollbars="none"
+                  android:paddingHorizontal="4dp">
+                  <LinearLayout
+                      android:id="@+id/ai_features_container"
+                      android:layout_width="wrap_content"
+                      android:layout_height="match_parent"
+                      android:orientation="horizontal"
+                      android:gravity="center_vertical" />
+              </HorizontalScrollView>
+              <LinearLayout
+                  android:id="@+id/keys_container"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:padding="2dp" />
+          </LinearLayout>
+          EOFLAY
+
+          cat > app/src/main/res/layout/activity_main.xml << 'EOFACT'
+          <?xml version="1.0" encoding="utf-8"?>
+          <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:gravity="center"
+              android:padding="24dp"
+              android:background="@color/keyboard_bg">
+              <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="AI Keyboard Pro"
+                  android:textSize="32sp"
+                  android:textStyle="bold"
+                  android:textColor="@color/accent_purple"
+                  android:layout_marginBottom="16dp" />
+              <Button
+                  android:id="@+id/btn_enable"
+                  android:layout_width="match_parent"
+                  android:layout_height="56dp"
+                  android:text="Enable Keyboard"
+                  android:background="@drawable/key_bg_ai"
+                  android:textColor="@color/key_text_light" />
+          </LinearLayout>
+          EOFACT
+
+          # Kotlin files
+          cat > app/src/main/java/com/aikeyboard/pro/MainActivity.kt << 'EOFMAIN'
+          package com.aikeyboard.pro
+          import android.content.Intent
+          import android.os.Bundle
+          import android.provider.Settings
+          import android.widget.Button
+          import androidx.appcompat.app.AppCompatActivity
+          class MainActivity : AppCompatActivity() {
+              override fun onCreate(savedInstanceState: Bundle?) {
+                  super.onCreate(savedInstanceState)
+                  setContentView(R.layout.activity_main)
+                  findViewById<Button>(R.id.btn_enable).setOnClickListener {
+                      startActivity(Intent(Settings.ACTION_INPUT_METHOD_SETTINGS))
+                  }
+              }
+          }
+          EOFMAIN
+
+          cat > app/src/main/java/com/aikeyboard/pro/KeyboardService.kt << 'EOFKEY'
+          package com.aikeyboard.pro
+          import android.inputmethodservice.InputMethodService
+          import android.view.LayoutInflater
+          import android.view.View
+          import android.widget.Button
+          import android.widget.LinearLayout
+          import android.widget.TextView
+          import androidx.core.content.ContextCompat
+          class KeyboardService : InputMethodService() {
+              private lateinit var keysContainer: LinearLayout
+              private lateinit var suggestionsContainer: LinearLayout
+              private lateinit var aiFeaturesContainer: LinearLayout
+              private var currentText = StringBuilder()
+              private var isShift = false
+              private var isSymbols = false
+              private val lettersRows = listOf(
+                  listOf("q","w","e","r","t","y","u","i","o","p"),
+                  listOf("a","s","d","f","g","h","j","k","l"),
+                  listOf("z","x","c","v","b","n","m")
+              )
+              private val symbolsRows = listOf(
+                  listOf("1","2","3","4","5","6","7","8","9","0"),
+                  listOf("@","#","$","_","&","-","+","(",")","/"),
+                  listOf("*","\"","'",":",";","!","?")
+              )
+              override fun onCreateInputView(): View {
+                  val view = LayoutInflater.from(this).inflate(R.layout.keyboard_layout, null)
+                  keysContainer = view.findViewById(R.id.keys_container)
+                  suggestionsContainer = view.findViewById(R.id.suggestions_container)
+                  aiFeaturesContainer = view.findViewById(R.id.ai_features_container)
+                  setupAIFeatures()
+                  buildKeyboard()
+                  return view
+              }
+              private fun setupAIFeatures() {
+                  val features = listOf("Grammar" to { enhanceText() }, "Tone" to { enhanceText() }, "Emoji" to { insertEmoji() }, "Translate" to { insertEmoji() }, "Enhance" to { enhanceText() })
+                  features.forEach { (label, action) ->
+                      val btn = Button(this).apply {
+                          text = label
+                          textSize = 11f
+                          setBackgroundResource(R.drawable.suggestion_chip_bg)
+                          setTextColor(ContextCompat.getColor(context, R.color.suggestion_text))
+                          layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT).apply { marginEnd = 8 }
+                          setOnClickListener { action() }
+                      }
+                      aiFeaturesContainer.addView(btn)
+                  }
+              }
+              private fun buildKeyboard() {
+                  keysContainer.removeAllViews()
+                  val rows = if (isSymbols) symbolsRows else lettersRows
+                  rows.forEachIndexed { index, row ->
+                      val rowLayout = LinearLayout(this).apply {
+                          orientation = LinearLayout.HORIZONTAL
+                          layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply { setMargins(0, 4, 0, 4) }
+                      }
+                      if (index == 2) rowLayout.addView(createKey("⇧", true, false, 1.5f) { toggleShift() })
+                      row.forEach { key ->
+                          val display = if (isShift && !isSymbols) key.uppercase() else key
+                          rowLayout.addView(createKey(display, false, false, 1f) { onKeyPress(key) })
+                      }
+                      if (index == 2) rowLayout.addView(createKey("⌫", true, false, 1.5f) { backspace() })
+                      keysContainer.addView(rowLayout)
+                  }
+                  val bottomRow = LinearLayout(this).apply {
+                      orientation = LinearLayout.HORIZONTAL
+                      layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply { setMargins(0, 4, 0, 0) }
+                  }
+                  bottomRow.addView(createKey("123", true, false, 1.5f) { toggleSymbols() })
+                  bottomRow.addView(createKey("😊", false, true, 1f) { insertEmoji() })
+                  bottomRow.addView(createKey("space", true, false, 4f) { insertSpace() })
+                  bottomRow.addView(createKey("✨", false, true, 1f) { enhanceText() })
+                  bottomRow.addView(createKey("return", false, true, 2f) { sendReturn() })
+                  keysContainer.addView(bottomRow)
+              }
+              private fun createKey(label: String, isSpecial: Boolean = false, isAI: Boolean = false, weight: Float = 1f, action: () -> Unit): Button {
+                  return Button(this).apply {
+                      text = label
+                      textSize = if (label.length > 1) 12f else 18f
+                      isAllCaps = false
+                      val bg = when { isAI -> R.drawable.key_selector_ai; isSpecial -> R.drawable.key_selector_special; else -> R.drawable.key_selector }
+                      val tc = if (isAI) R.color.key_text_light else R.color.key_text
+                      setBackgroundResource(bg)
+                      setTextColor(ContextCompat.getColor(context, tc))
+                      layoutParams = LinearLayout.LayoutParams(0, 140).apply { this.weight = weight; marginEnd = 4 }
+                      setOnClickListener { action(); animateKey(this) }
+                  }
+              }
+              private fun animateKey(view: View) {
+                  view.animate().scaleX(0.9f).scaleY(0.9f).setDuration(50).withEndAction {
+                      view.animate().scaleX(1f).scaleY(1f).setDuration(50).start()
+                  }.start()
+              }
+              private fun onKeyPress(key: String) {
+                  val char = if (isShift && !isSymbols) key.uppercase() else key
+                  currentInputConnection?.commitText(char, 1)
+                  currentText.append(char)
+              }
+              private fun backspace() {
+                  currentInputConnection?.deleteSurroundingText(1, 0)
+                  if (currentText.isNotEmpty()) currentText.deleteCharAt(currentText.length - 1)
+              }
+              private fun insertSpace() {
+                  currentInputConnection?.commitText(" ", 1)
+                  currentText.append(" ")
+              }
+              private fun sendReturn() {
+                  currentInputConnection?.commitText("\n", 1)
+                  currentText.clear()
+              }
+              private fun toggleShift() { isShift = !isShift; buildKeyboard() }
+              private fun toggleSymbols() { isSymbols = !isSymbols; buildKeyboard() }
+              private fun insertEmoji() {
+                  val emojis = listOf("😀", "😂", "❤️", "👍", "🔥", "✨", "🎉", "💯")
+                  val emoji = emojis.random()
+                  currentInputConnection?.commitText(emoji, 1)
+                  currentText.append(emoji)
+              }
+              private fun enhanceText() {
+                  val enhanced = currentText.toString() + " ✨"
+                  currentInputConnection?.deleteSurroundingText(currentText.length, 0)
+                  currentInputConnection?.commitText(enhanced, 1)
+                  currentText.clear()
+                  currentText.append(enhanced)
+              }
+          }
+          EOFKEY
+
+          # Generate gradlew
+          gradle wrapper --gradle-version 8.5
+          chmod +x gradlew
+
       - name: Cache Gradle
         uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Build Debug APK with Gradle
-        run: gradle assembleDebug --stacktrace
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug --stacktrace
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
@@ -54,9 +545,6 @@ jobs:
         with:
           tag_name: v1.0.${{ github.run_number }}
           name: AI Keyboard Pro v1.0.${{ github.run_number }}
-          body: |
-            🚀 AI Keyboard Pro - Automated Build
-            - Built from commit: ${{ github.sha }}
           files: app/build/outputs/apk/debug/*.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
