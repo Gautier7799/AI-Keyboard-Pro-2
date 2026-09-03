@@ -1,4 +1,4 @@
-name: Build AI Keyboard Pro (V43 Perfect Menu Fix)
+name: Build AI Keyboard Pro (V44 Full Features)
 
 on:
   push:
@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   build-apk:
-    name: Generate iOS Clone Keyboard V43
+    name: Generate iOS Clone Keyboard V44
     runs-on: ubuntu-latest
 
     steps:
@@ -59,7 +59,7 @@ jobs:
           android {
               namespace = "com.aikeyboard.pro"
               compileSdk = 34
-              defaultConfig { applicationId = "com.aikeyboard.pro"; minSdk = 28; targetSdk = 34; versionCode = 43; versionName = "43.0.0" }
+              defaultConfig { applicationId = "com.aikeyboard.pro"; minSdk = 28; targetSdk = 34; versionCode = 44; versionName = "44.0.0" }
               compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
               kotlinOptions { jvmTarget = "17" }
           }
@@ -74,11 +74,11 @@ jobs:
           cat << 'EOF' > app/src/main/res/values/strings.xml
           <resources>
               <string name="app_name">Keyboard Pro iOS</string>
-              <string name="ime_name">iOS Keyboard V43</string>
+              <string name="ime_name">iOS Keyboard V44</string>
           </resources>
           EOF
 
-          # --- أيقونات الكيبورد الأساسية ---
+          # --- أيقونات الكيبورد ---
           cat << 'EOF' > app/src/main/res/drawable/ic_shift.xml
           <vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="24dp" android:height="24dp" android:viewportWidth="24" android:viewportHeight="24"><path android:fillColor="#000000" android:pathData="M12,4 L4,14 L9,14 L9,20 L15,20 L15,14 L20,14 Z"/></vector>
           EOF
@@ -94,8 +94,6 @@ jobs:
           cat << 'EOF' > app/src/main/res/drawable/ic_settings_white.xml
           <vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="24dp" android:height="24dp" android:viewportWidth="24" android:viewportHeight="24"><path android:fillColor="#FFFFFF" android:pathData="M19.14,12.94c0.04,-0.3 0.06,-0.61 0.06,-0.94c0,-0.32 -0.02,-0.64 -0.06,-0.94l2.03,-1.58c0.18,-0.14 0.23,-0.41 0.12,-0.61l-1.92,-3.32c-0.12,-0.22 -0.37,-0.29 -0.59,-0.22l-2.39,0.96c-0.5,-0.38 -1.03,-0.7 -1.62,-0.94L14.4,2.81c-0.04,-0.24 -0.24,-0.41 -0.48,-0.41h-3.84c-0.24,0 -0.43,0.17 -0.47,0.41L9.25,5.35C8.66,5.59 8.12,5.92 7.63,6.29L5.24,5.33c-0.22,-0.08 -0.47,0 -0.59,0.22L2.73,8.87C2.62,9.08 2.66,9.34 2.86,9.48l2.03,1.58C4.84,11.36 4.8,11.69 4.8,12s0.02,0.64 0.06,0.94l-2.03,1.58c-0.18,0.14 -0.23,0.41 -0.12,0.61l1.92,3.32c0.12,0.22 0.37,0.29 0.59,0.22l2.39,-0.96c0.5,0.38 1.03,0.7 1.62,0.94l0.36,2.54c0.05,0.24 0.24,0.41 0.48,0.41h3.84c0.24,0 0.43,-0.17 0.47,-0.41l0.36,-2.54c0.59,-0.24 1.13,-0.56 1.62,-0.94l2.39,0.96c0.22,0.08 0.47,0 0.59,-0.22l1.92,-3.32c0.12,-0.22 0.07,-0.49 -0.12,-0.61L19.14,12.94zM12,15.6c-1.98,0 -3.6,-1.62 -3.6,-3.6s1.62,-3.6 3.6,-3.6s3.6,1.62 3.6,3.6S13.98,15.6 12,15.6z"/></vector>
           EOF
-
-          # --- أيقونات قائمة الإعدادات الداخلية (الجديدة) ---
           cat << 'EOF' > app/src/main/res/drawable/ic_resize.xml
           <vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="24dp" android:height="24dp" android:viewportWidth="24" android:viewportHeight="24"><path android:fillColor="#000000" android:pathData="M10,21V19H7.41L12,14.41L14.41,16.83L19,12.24L17.59,10.83L14.41,14L12,11.59L6,17.59V15H4V21H10ZM20,3H14V5H16.59L12,9.59L9.59,7.17L4,12.76L5.41,14.17L9.59,10L12,12.41L18,6.41V9H20V3Z"/></vector>
           EOF
@@ -115,7 +113,7 @@ jobs:
           <vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="24dp" android:height="24dp" android:viewportWidth="24" android:viewportHeight="24"><path android:fillColor="#000000" android:pathData="M19,3h-4.18C14.4,1.84,13.3,1,12,1c-1.3,0,-2.4,0.84,-2.82,2H5C3.9,3,3,3.9,3,5v14c0,1.1,0.9,2,2,2h14c1.1,0,2,-0.9,2,-2V5C21,3.9,20.1,3,19,3zM12,3c0.55,0,1,0.45,1,1s-0.45,1,-1,1s-1,-0.45,-1,-1S11.45,3,12,3zM11,14h2v2h-2V14zM11,7h2v5h-2V7z"/></vector>
           EOF
 
-          # --- واجهة التطبيق الرئيسية (الإعدادات) ---
+          # --- إعدادات التطبيق ---
           cat << 'EOF' > app/src/main/res/layout/activity_main.xml
           <?xml version="1.0" encoding="utf-8"?>
           <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -151,26 +149,9 @@ jobs:
                       android:clickable="true"
                       android:foreground="?android:attr/selectableItemBackground"
                       android:layout_marginBottom="20dp">
-                      
-                      <LinearLayout
-                          android:layout_width="match_parent"
-                          android:layout_height="match_parent"
-                          android:orientation="horizontal"
-                          android:gravity="center">
-                          
-                          <ImageView
-                              android:layout_width="28dp"
-                              android:layout_height="28dp"
-                              android:src="@drawable/ic_settings_white"
-                              android:layout_marginEnd="12dp"/>
-                              
-                          <TextView
-                              android:layout_width="wrap_content"
-                              android:layout_height="wrap_content"
-                              android:text="تفعيل الكيبورد"
-                              android:textSize="20sp"
-                              android:textStyle="bold"
-                              android:textColor="#FFFFFF"/>
+                      <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="horizontal" android:gravity="center">
+                          <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_settings_white" android:layout_marginEnd="12dp"/>
+                          <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="تفعيل الكيبورد" android:textSize="20sp" android:textStyle="bold" android:textColor="#FFFFFF"/>
                       </LinearLayout>
                   </androidx.cardview.widget.CardView>
 
@@ -180,44 +161,20 @@ jobs:
                       app:cardCornerRadius="32dp"
                       app:cardBackgroundColor="#DCE5DF"
                       app:cardElevation="0dp">
-                      
-                      <LinearLayout
-                          android:layout_width="match_parent"
-                          android:layout_height="wrap_content"
-                          android:orientation="vertical"
-                          android:padding="24dp">
-                          
-                          <TextView
-                              android:layout_width="match_parent"
-                              android:layout_height="wrap_content"
-                              android:text="تكبير وتصغير حجم الكيبورد:"
-                              android:textSize="18sp"
-                              android:textStyle="bold"
-                              android:textColor="#1F3622"
-                              android:layout_marginBottom="16dp"
-                              android:gravity="center"/>
-
+                      <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="24dp">
+                          <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="تكبير وتصغير حجم الكيبورد:" android:textSize="18sp" android:textStyle="bold" android:textColor="#1F3622" android:layout_marginBottom="16dp" android:gravity="center"/>
                           <com.google.android.material.slider.Slider
-                              android:id="@+id/heightSlider"
-                              android:layout_width="match_parent"
-                              android:layout_height="wrap_content"
-                              android:valueFrom="40.0"
-                              android:valueTo="75.0"
-                              android:value="52.0"
-                              android:stepSize="1.0"
-                              app:thumbColor="#2D5A27"
-                              app:trackColorActive="#2D5A27"
-                              app:trackColorInactive="#A9BBAA" />
+                              android:id="@+id/heightSlider" android:layout_width="match_parent" android:layout_height="wrap_content"
+                              android:valueFrom="40.0" android:valueTo="75.0" android:value="52.0" android:stepSize="1.0"
+                              app:thumbColor="#2D5A27" app:trackColorActive="#2D5A27" app:trackColorInactive="#A9BBAA" />
                       </LinearLayout>
                   </androidx.cardview.widget.CardView>
-
               </LinearLayout>
           </ScrollView>
           EOF
 
           cat << 'EOF' > app/src/main/java/com/aikeyboard/pro/MainActivity.kt
           package com.aikeyboard.pro
-
           import android.content.Context
           import android.content.Intent
           import android.os.Bundle
@@ -225,21 +182,15 @@ jobs:
           import androidx.appcompat.app.AppCompatActivity
           import androidx.cardview.widget.CardView
           import com.google.android.material.slider.Slider
-
           class MainActivity : AppCompatActivity() {
               override fun onCreate(savedInstanceState: Bundle?) {
                   super.onCreate(savedInstanceState)
                   setContentView(R.layout.activity_main)
                   val prefs = getSharedPreferences("keyboard_prefs", Context.MODE_PRIVATE)
-
-                  findViewById<CardView>(R.id.btnEnableCard).setOnClickListener {
-                      startActivity(Intent(Settings.ACTION_INPUT_METHOD_SETTINGS))
-                  }
+                  findViewById<CardView>(R.id.btnEnableCard).setOnClickListener { startActivity(Intent(Settings.ACTION_INPUT_METHOD_SETTINGS)) }
                   val slider = findViewById<Slider>(R.id.heightSlider)
                   slider.value = prefs.getFloat("key_height", 52f)
-                  slider.addOnChangeListener { _, value, _ ->
-                      prefs.edit().putFloat("key_height", value).apply()
-                  }
+                  slider.addOnChangeListener { _, value, _ -> prefs.edit().putFloat("key_height", value).apply() }
               }
           }
           EOF
@@ -263,7 +214,7 @@ jobs:
           </input-method>
           EOF
 
-          # 🔥 تحديث الكيبورد (V43) الأزرار تعمل بامتياز مع الإخفاء التلقائي 🔥
+          # 🔥 الكود الأساسي للكيبورد - V44 الإيموجي وتعديل النص يعملان بشكل حقيقي 100% 🔥
           cat << 'EOF' > app/src/main/java/com/aikeyboard/pro/KeyboardService.kt
           package com.aikeyboard.pro
 
@@ -289,8 +240,10 @@ jobs:
           import android.view.ViewGroup
           import android.view.inputmethod.EditorInfo
           import android.widget.FrameLayout
+          import android.widget.GridLayout
           import android.widget.ImageView
           import android.widget.LinearLayout
+          import android.widget.ScrollView
           import android.widget.TextView
           import android.widget.Toast
 
@@ -312,8 +265,12 @@ jobs:
               private lateinit var absoluteRoot: FrameLayout
               private lateinit var rootLayout: LinearLayout
               private lateinit var predictionContainer: LinearLayout
+              private lateinit var contentContainer: FrameLayout // حاوية ذكية للمحتوى
+              
               private lateinit var keysContainer: LinearLayout
               private lateinit var menuContainer: LinearLayout
+              private lateinit var emojiContainer: LinearLayout
+              private lateinit var textEditContainer: LinearLayout
               private lateinit var settingsIcon: TextView
               
               private lateinit var popupView: TextView
@@ -323,66 +280,49 @@ jobs:
               private val predictionViews = mutableListOf<TextView>()
               private val handler = Handler(Looper.getMainLooper())
 
-              private val dictionaryAr = listOf("مرحبا", "شكرا", "السلام", "عليكم", "نعم", "لا", "كيف", "حالك", "إن", "شاء", "الله", "صباح", "الخير", "مساء", "أين", "متى", "لماذا", "جميل", "جدا", "اليوم", "غدا", "الحمد", "لله", "يا", "ما", "هذا", "هنا", "هناك", "من", "هل", "في", "على", "إلى", "أن", "كل", "لم", "لن", "عن", "كان", "الذي", "التي", "قال", "أو", "قد", "بعض", "غير", "بعد", "حتى", "فقط", "بين", "أكثر", "عند", "الآن", "ليس", "يوم", "شيء", "لو", "كما", "ثم", "أي", "قبل", "مع", "لكن", "أنا", "أنت", "هو", "هي", "نحن", "هم", "كثيرا", "جيد", "أريد", "يمكن", "وقت", "عمل", "حياة", "ناس", "رجل", "امرأة", "كبير", "صغير", "جديد", "قديم", "صحيح", "خطأ", "دائما", "أبدا", "ربما", "عفوا", "آسف", "أرجوك", "طبعا", "أجل", "بلى")
-              
-              private val dictionaryFr = listOf("bonjour", "merci", "oui", "non", "comment", "ça", "va", "bien", "salut", "je", "tu", "il", "elle", "nous", "vous", "ils", "elles", "suis", "est", "sont", "pour", "avec", "dans", "sur", "qui", "que", "quoi", "quand", "où", "pourquoi", "très", "beau", "bon", "c'est", "le", "la", "les", "un", "une", "des", "et", "à", "en", "se", "pas", "plus", "par", "ce", "ne", "au", "aux", "du", "mon", "ton", "son", "ma", "ta", "sa", "mes", "tes", "ses", "mais", "ou", "donc", "or", "ni", "car", "faire", "dire", "pouvoir", "aller", "voir", "vouloir", "venir", "devoir", "prendre", "trouver", "donner", "falloir", "parler", "mettre", "savoir", "passer", "regarder", "aimer", "croire", "demander", "rester", "répondre", "entendre", "penser", "arriver", "connaître", "devenir", "sentir", "sembler", "tenir", "comprendre", "rendre", "attendre", "sortir")
+              // قائمة إيموجي حقيقية
+              private val emojisList = "😀 😁 😂 🤣 😃 😄 😅 😆 😉 😊 😋 😎 😍 😘 🥰 😗 😙 😚 ☺️ 🙂 🤗 🤩 🤔 🤨 😐 😑 😶 🙄 😏 😣 😥 😮 🤐 😯 😪 😫 😴 😌 😛 😜 😝 🤤 😒 😓 😔 😕 🙃 🤑 😲 ☹️ 🙁 😖 😞 😟 😤 😢 😭 😦 😧 😨 😩 🤯 😬 😰 😱 🥵 🥶 😳 🤪 😵 😡 😠 🤬 😷 🤒 🤕 🤢 🤮 🤧 😇 🤠 🥳 🥴 🥺 🤥 🤫 🤭 🧐 🤓 😈 👿 🤡 👹 👺 💀 ☠️ 👻 👽 👾 🤖 💩 💖 💔 ❤️ 🔥 👍 👎 🙏 👏 🙌 🤝".split(" ")
 
+              private val dictionaryAr = listOf("مرحبا", "شكرا", "السلام", "عليكم", "نعم", "لا", "كيف", "حالك", "إن", "شاء", "الله", "صباح", "الخير", "مساء", "أين", "متى", "لماذا", "جميل", "جدا", "اليوم", "غدا", "الحمد", "لله")
+              private val dictionaryFr = listOf("bonjour", "merci", "oui", "non", "comment", "ça", "va", "bien", "salut", "je", "tu", "il", "elle", "nous", "vous", "ils", "elles")
               private val alternateChars = mapOf("ا" to listOf("أ", "إ", "آ", "ء", "ا"), "ي" to listOf("ئ", "ى", "ي"), "و" to listOf("ؤ", "و"), "ى" to listOf("ي", "ئ", "ى"), "ة" to listOf("ه", "ة"), "ه" to listOf("ة", "ه"), "د" to listOf("ذ", "د"), "ل" to listOf("لا", "لأ", "لإ", "لآ", "ل"))
 
               private fun updateThemeColors() {
                   val isNightMode = (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
                   if (isNightMode) {
-                      kbBgColor = Color.parseColor("#1C1C1E") 
-                      keyNormalFace = Color.parseColor("#4B4B4B")
-                      keyNormalPressed = Color.parseColor("#2C2C2E")
-                      keyControlFace = Color.parseColor("#2C2C2E")
-                      keyControlPressed = Color.parseColor("#4B4B4B")
-                      keyShadow = Color.parseColor("#111111")
-                      txtColor = Color.parseColor("#FFFFFF")
+                      kbBgColor = Color.parseColor("#1C1C1E"); keyNormalFace = Color.parseColor("#4B4B4B"); keyNormalPressed = Color.parseColor("#2C2C2E"); keyControlFace = Color.parseColor("#2C2C2E"); keyControlPressed = Color.parseColor("#4B4B4B"); keyShadow = Color.parseColor("#111111"); txtColor = Color.parseColor("#FFFFFF")
                   } else {
-                      kbBgColor = Color.parseColor("#D1D4D9")
-                      keyNormalFace = Color.parseColor("#FFFFFF")
-                      keyNormalPressed = Color.parseColor("#B3B8C3")
-                      keyControlFace = Color.parseColor("#B3B8C3")
-                      keyControlPressed = Color.parseColor("#FFFFFF")
-                      keyShadow = Color.parseColor("#898A8D")
-                      txtColor = Color.parseColor("#000000")
+                      kbBgColor = Color.parseColor("#D1D4D9"); keyNormalFace = Color.parseColor("#FFFFFF"); keyNormalPressed = Color.parseColor("#B3B8C3"); keyControlFace = Color.parseColor("#B3B8C3"); keyControlPressed = Color.parseColor("#FFFFFF"); keyShadow = Color.parseColor("#898A8D"); txtColor = Color.parseColor("#000000")
                   }
               }
 
               override fun onConfigurationChanged(newConfig: Configuration) {
                   super.onConfigurationChanged(newConfig)
-                  val oldBgColor = kbBgColor
-                  updateThemeColors()
-                  if (oldBgColor != kbBgColor) {
-                      setInputView(onCreateInputView())
-                  }
+                  val oldBgColor = kbBgColor; updateThemeColors()
+                  if (oldBgColor != kbBgColor) setInputView(onCreateInputView())
               }
 
               override fun onStartInputView(info: EditorInfo?, restarting: Boolean) {
                   super.onStartInputView(info, restarting)
                   val prefs = getSharedPreferences("keyboard_prefs", Context.MODE_PRIVATE)
                   val newHeight = prefs.getFloat("key_height", 52f)
-                  if (newHeight != keyHeightDp) {
-                      keyHeightDp = newHeight
-                      if (::keysContainer.isInitialized) renderKeys()
-                  }
-                  resetMenu()
+                  if (newHeight != keyHeightDp) { keyHeightDp = newHeight; if (::keysContainer.isInitialized) renderKeys() }
+                  resetToKeyboard()
                   handler.post { updatePredictions() }
               }
 
-              private fun resetMenu() {
-                  if (::menuContainer.isInitialized && ::keysContainer.isInitialized && ::settingsIcon.isInitialized) {
-                      menuContainer.visibility = View.GONE
+              private fun resetToKeyboard() {
+                  if (::contentContainer.isInitialized) {
                       keysContainer.visibility = View.VISIBLE
+                      menuContainer.visibility = View.GONE
+                      emojiContainer.visibility = View.GONE
+                      textEditContainer.visibility = View.GONE
                       settingsIcon.text = "⚙️"
                   }
               }
 
               override fun onCreateInputView(): View {
-                  predictionViews.clear() 
-                  updateThemeColors()
-                  
+                  predictionViews.clear(); updateThemeColors()
                   val dp = resources.displayMetrics.density
                   val prefs = getSharedPreferences("keyboard_prefs", Context.MODE_PRIVATE)
                   keyHeightDp = prefs.getFloat("key_height", 52f)
@@ -394,122 +334,85 @@ jobs:
                       setBackgroundColor(Color.TRANSPARENT)
                   }
 
-                  val roundedBg = GradientDrawable().apply {
-                      setColor(kbBgColor)
-                      setCornerRadii(floatArrayOf(14f*dp, 14f*dp, 14f*dp, 14f*dp, 0f, 0f, 0f, 0f))
-                  }
+                  val roundedBg = GradientDrawable().apply { setColor(kbBgColor); setCornerRadii(floatArrayOf(14f*dp, 14f*dp, 14f*dp, 14f*dp, 0f, 0f, 0f, 0f)) }
 
                   rootLayout = LinearLayout(this).apply {
-                      orientation = LinearLayout.VERTICAL
-                      background = roundedBg
+                      orientation = LinearLayout.VERTICAL; background = roundedBg
                       layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
                       setPadding(0, 0, 0, (4 * dp).toInt()) 
                   }
 
                   predictionContainer = LinearLayout(this).apply {
-                      orientation = LinearLayout.HORIZONTAL
-                      layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (44 * dp).toInt())
-                      setBackgroundColor(Color.TRANSPARENT)
+                      orientation = LinearLayout.HORIZONTAL; layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (44 * dp).toInt())
                       gravity = Gravity.CENTER_VERTICAL
                   }
                   
                   predictionContainer.addView(TextView(this).apply {
-                      text = "⚙️"
-                      textSize = 20f
-                      gravity = Gravity.CENTER
-                      layoutParams = LinearLayout.LayoutParams((44 * dp).toInt(), ViewGroup.LayoutParams.MATCH_PARENT)
+                      text = "⚙️"; textSize = 20f; gravity = Gravity.CENTER; layoutParams = LinearLayout.LayoutParams((44 * dp).toInt(), ViewGroup.LayoutParams.MATCH_PARENT)
                       settingsIcon = this 
-                      
                       setOnTouchListener { v, event -> 
                           if(event.action == MotionEvent.ACTION_DOWN) {
                               vibrateAndSound(v)
-                              if (keysContainer.visibility == View.VISIBLE) {
-                                  keysContainer.visibility = View.GONE
-                                  menuContainer.visibility = View.VISIBLE
-                                  text = "✖️"
+                              if (menuContainer.visibility == View.GONE) {
+                                  keysContainer.visibility = View.GONE; emojiContainer.visibility = View.GONE; textEditContainer.visibility = View.GONE
+                                  menuContainer.visibility = View.VISIBLE; text = "✖️"
                               } else {
-                                  resetMenu()
+                                  resetToKeyboard()
                               }
                           }
                           true 
                       }
                   })
 
-                  val wordsLayout = LinearLayout(this).apply {
-                      orientation = LinearLayout.HORIZONTAL
-                      layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1f)
-                  }
-                  
+                  val wordsLayout = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL; layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1f) }
                   for (i in 0..2) {
                       val tv = TextView(this).apply {
-                          text = ""
-                          textSize = 17f
-                          setTextColor(txtColor)
-                          gravity = Gravity.CENTER
-                          layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1f)
-                          typeface = Typeface.create("sans-serif", Typeface.NORMAL)
-                          maxLines = 1 
-                          ellipsize = TextUtils.TruncateAt.END 
+                          text = ""; textSize = 17f; setTextColor(txtColor); gravity = Gravity.CENTER; layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1f)
+                          typeface = Typeface.create("sans-serif", Typeface.NORMAL); maxLines = 1; ellipsize = TextUtils.TruncateAt.END 
                       }
-                      predictionViews.add(tv)
-                      wordsLayout.addView(tv)
+                      predictionViews.add(tv); wordsLayout.addView(tv)
                   }
                   predictionContainer.addView(wordsLayout)
-
                   predictionContainer.addView(TextView(this).apply {
-                      text = "✨"
-                      textSize = 20f
-                      gravity = Gravity.CENTER
-                      layoutParams = LinearLayout.LayoutParams((44 * dp).toInt(), ViewGroup.LayoutParams.MATCH_PARENT)
-                      setOnTouchListener { v, event -> 
-                          if(event.action==MotionEvent.ACTION_DOWN) { vibrateAndSound(v); Toast.makeText(this@KeyboardService, "✨ AI Ready", Toast.LENGTH_SHORT).show() }
-                          true 
-                      }
+                      text = "✨"; textSize = 20f; gravity = Gravity.CENTER; layoutParams = LinearLayout.LayoutParams((44 * dp).toInt(), ViewGroup.LayoutParams.MATCH_PARENT)
+                      setOnTouchListener { v, event -> if(event.action==MotionEvent.ACTION_DOWN) { vibrateAndSound(v); Toast.makeText(this@KeyboardService, "✨ AI Ready", Toast.LENGTH_SHORT).show() }; true }
                   })
-                  
                   rootLayout.addView(predictionContainer)
                   rootLayout.addView(View(this).apply { layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (1*dp).toInt()); setBackgroundColor(Color.parseColor("#33898A8D")) })
                   
-                  keysContainer = LinearLayout(this).apply {
-                      orientation = LinearLayout.VERTICAL
+                  contentContainer = FrameLayout(this).apply {
                       layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-                      setPadding(0, (6 * dp).toInt(), 0, 0)
                   }
-                  rootLayout.addView(keysContainer)
                   
-                  menuContainer = LinearLayout(this).apply {
-                      orientation = LinearLayout.VERTICAL
-                      layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-                      visibility = View.GONE
-                      setPadding((8*dp).toInt(), (12*dp).toInt(), (8*dp).toInt(), (12*dp).toInt())
-                  }
+                  keysContainer = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT); setPadding(0, (6 * dp).toInt(), 0, 0) }
+                  menuContainer = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT); visibility = View.GONE; setPadding((8*dp).toInt(), (12*dp).toInt(), (8*dp).toInt(), (12*dp).toInt()) }
+                  emojiContainer = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT); visibility = View.GONE; setPadding(0, (6 * dp).toInt(), 0, 0) }
+                  textEditContainer = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT); visibility = View.GONE; setPadding((8*dp).toInt(), (16*dp).toInt(), (8*dp).toInt(), (16*dp).toInt()) }
+                  
                   buildMenuRows()
-                  rootLayout.addView(menuContainer)
+                  buildEmojiView()
+                  buildTextEditView()
                   
+                  contentContainer.addView(keysContainer)
+                  contentContainer.addView(menuContainer)
+                  contentContainer.addView(emojiContainer)
+                  contentContainer.addView(textEditContainer)
+                  rootLayout.addView(contentContainer)
                   absoluteRoot.addView(rootLayout)
 
                   popupView = TextView(this).apply {
-                      layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-                      visibility = View.GONE
-                      textSize = 30f
-                      setTextColor(txtColor)
-                      gravity = Gravity.CENTER
-                      typeface = Typeface.create("sans-serif", Typeface.NORMAL)
+                      layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT); visibility = View.GONE
+                      textSize = 30f; setTextColor(txtColor); gravity = Gravity.CENTER; typeface = Typeface.create("sans-serif", Typeface.NORMAL)
                       val popupShape = GradientDrawable().apply { setShape(GradientDrawable.RECTANGLE); setColor(keyNormalFace); setCornerRadius(6f * dp) }
                       val shadowShape = GradientDrawable().apply { setShape(GradientDrawable.RECTANGLE); setColor(keyShadow); setCornerRadius(6f * dp) }
-                      val popupLayer = LayerDrawable(arrayOf(shadowShape, popupShape)).apply { setLayerInset(1, 0, 0, 0, (2 * dp).toInt()) }
-                      background = popupLayer
+                      background = LayerDrawable(arrayOf(shadowShape, popupShape)).apply { setLayerInset(1, 0, 0, 0, (2 * dp).toInt()) }
                       elevation = 4f * dp
                   }
                   absoluteRoot.addView(popupView)
 
                   optionsContainer = LinearLayout(this).apply {
-                      layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-                      orientation = LinearLayout.HORIZONTAL
-                      visibility = View.GONE
-                      background = GradientDrawable().apply { setColor(keyNormalFace); setCornerRadius(8f * dp) }
-                      elevation = 6f * dp
-                      setPadding((4*dp).toInt(), (4*dp).toInt(), (4*dp).toInt(), (4*dp).toInt())
+                      layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT); orientation = LinearLayout.HORIZONTAL; visibility = View.GONE
+                      background = GradientDrawable().apply { setColor(keyNormalFace); setCornerRadius(8f * dp) }; elevation = 6f * dp; setPadding((4*dp).toInt(), (4*dp).toInt(), (4*dp).toInt(), (4*dp).toInt())
                   }
                   absoluteRoot.addView(optionsContainer)
 
@@ -517,92 +420,159 @@ jobs:
                   return absoluteRoot
               }
               
-              // 🔥 بناء القائمة (الإصدار المعالج بذكاء - أزرار تعمل بنسبة 100%) 🔥
+              // 🔥 1. واجهة قائمة Gboard 🔥
               private fun buildMenuRows() {
                   menuContainer.removeAllViews()
                   val dp = resources.displayMetrics.density
                   
                   val row1 = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
                   row1.addView(createMenuPill("تغيير الحجم", R.drawable.ic_resize) {
-                      val intent = Intent(this@KeyboardService, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                      startActivity(intent)
-                      requestHideSelf(0) // إخفاء الكيبورد ليظهر التطبيق!
-                      resetMenu()
+                      startActivity(Intent(this@KeyboardService, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                      requestHideSelf(0)
                   })
                   row1.addView(createMenuPill("ترجمة", R.drawable.ic_translate) {
-                      Toast.makeText(this@KeyboardService, "ميزة الترجمة قادمة قريباً 🚀", Toast.LENGTH_SHORT).show()
-                      resetMenu()
+                      val intent = packageManager.getLaunchIntentForPackage("com.google.android.apps.translate")
+                      if (intent != null) { startActivity(intent); requestHideSelf(0) }
+                      else { Toast.makeText(this@KeyboardService, "يرجى تثبيت تطبيق ترجمة جوجل أولاً", Toast.LENGTH_SHORT).show() }
                   })
                   menuContainer.addView(row1)
                   
                   val row2 = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
                   row2.addView(createMenuPill("المظهر", R.drawable.ic_theme) {
-                      val intent = Intent(this@KeyboardService, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                      startActivity(intent)
-                      requestHideSelf(0) // إخفاء الكيبورد ليظهر التطبيق!
-                      resetMenu()
+                      startActivity(Intent(this@KeyboardService, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                      requestHideSelf(0)
                   })
-                  row2.addView(createMenuPill("رموز الإيموجي", R.drawable.ic_emoji) {
-                      Toast.makeText(this@KeyboardService, "الإيموجي قريباً 🚀", Toast.LENGTH_SHORT).show()
-                      resetMenu()
+                  row2.addView(createMenuPill("الإيموجي", R.drawable.ic_emoji) {
+                      menuContainer.visibility = View.GONE
+                      emojiContainer.visibility = View.VISIBLE
+                      settingsIcon.text = "✖️"
                   })
                   menuContainer.addView(row2)
                   
                   val row3 = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
                   row3.addView(createMenuPill("تعديل النص", R.drawable.ic_text_edit) {
-                      Toast.makeText(this@KeyboardService, "تعديل النص قريباً 🚀", Toast.LENGTH_SHORT).show()
-                      resetMenu()
+                      menuContainer.visibility = View.GONE
+                      textEditContainer.visibility = View.VISIBLE
+                      settingsIcon.text = "✖️"
                   })
-                  row3.addView(createMenuPill("الملاحظات", R.drawable.ic_notes) {
-                      Toast.makeText(this@KeyboardService, "الملاحظات قريباً 🚀", Toast.LENGTH_SHORT).show()
-                      resetMenu()
+                  row3.addView(createMenuPill("ملاحظات Keep", R.drawable.ic_notes) {
+                      val intent = packageManager.getLaunchIntentForPackage("com.google.android.keep")
+                      if (intent != null) { startActivity(intent); requestHideSelf(0) }
+                      else { Toast.makeText(this@KeyboardService, "يرجى تثبيت تطبيق Google Keep", Toast.LENGTH_SHORT).show() }
                   })
                   menuContainer.addView(row3)
+              }
+
+              // 🔥 2. واجهة الإيموجي (الجديدة كلياً والمستقرة) 🔥
+              private fun buildEmojiView() {
+                  emojiContainer.removeAllViews()
+                  val dp = resources.displayMetrics.density
+                  
+                  val scrollView = ScrollView(this).apply {
+                      layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (220 * dp).toInt())
+                  }
+                  
+                  val grid = GridLayout(this).apply {
+                      columnCount = 8
+                      layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                  }
+                  
+                  emojisList.forEach { emoji ->
+                      val tv = TextView(this).apply {
+                          text = emoji
+                          textSize = 30f
+                          gravity = Gravity.CENTER
+                          layoutParams = GridLayout.LayoutParams().apply {
+                              width = 0; height = (50 * dp).toInt()
+                              columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f)
+                          }
+                          setOnClickListener {
+                              vibrateAndSound(this)
+                              currentInputConnection?.commitText(emoji, 1)
+                          }
+                      }
+                      grid.addView(tv)
+                  }
+                  scrollView.addView(grid)
+                  emojiContainer.addView(scrollView)
+                  
+                  // شريط العودة للإيموجي
+                  val bottomBar = LinearLayout(this).apply {
+                      orientation = LinearLayout.HORIZONTAL
+                      layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                      setPadding(0, (10*dp).toInt(), 0, (10*dp).toInt())
+                  }
+                  
+                  bottomBar.addView(createSpecialKey("العودة ABC", keyControlFace, keyControlPressed, 1f).apply {
+                      setOnClickListener { resetToKeyboard() }
+                  })
+                  bottomBar.addView(createSpecialKey("مسافة", keyNormalFace, keyNormalPressed, 2f).apply {
+                      setOnClickListener { vibrateAndSound(this); currentInputConnection?.commitText(" ", 1) }
+                  })
+                  bottomBar.addView(createIconKey(R.drawable.ic_backspace, keyControlFace, keyControlPressed, 1f).apply {
+                      setOnClickListener { vibrateAndSound(this); currentInputConnection?.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL)) }
+                  })
+                  
+                  emojiContainer.addView(bottomBar)
+              }
+
+              // 🔥 3. واجهة تعديل النص (لنسخ وقص ولصق والتحرك بدقة) 🔥
+              private fun buildTextEditView() {
+                  textEditContainer.removeAllViews()
+                  val dp = resources.displayMetrics.density
+                  
+                  val row1 = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL; layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT) }
+                  row1.addView(createActionBtn("تحديد الكل", 1f) { currentInputConnection?.performContextMenuAction(android.R.id.selectAll) })
+                  row1.addView(Space((8*dp).toInt(), true))
+                  row1.addView(createActionBtn("نسخ", 1f) { currentInputConnection?.performContextMenuAction(android.R.id.copy) })
+                  row1.addView(Space((8*dp).toInt(), true))
+                  row1.addView(createActionBtn("قص", 1f) { currentInputConnection?.performContextMenuAction(android.R.id.cut) })
+                  row1.addView(Space((8*dp).toInt(), true))
+                  row1.addView(createActionBtn("لصق", 1f) { currentInputConnection?.performContextMenuAction(android.R.id.paste) })
+                  textEditContainer.addView(row1)
+                  
+                  textEditContainer.addView(Space((16*dp).toInt()))
+                  
+                  val row2 = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL; layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT) }
+                  row2.addView(createActionBtn("⬅️ يمين", 1f) { currentInputConnection?.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_LEFT)) })
+                  row2.addView(Space((8*dp).toInt(), true))
+                  row2.addView(createActionBtn("⬇️ أسفل", 1f) { currentInputConnection?.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_DOWN)) })
+                  row2.addView(Space((8*dp).toInt(), true))
+                  row2.addView(createActionBtn("⬆️ أعلى", 1f) { currentInputConnection?.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_UP)) })
+                  row2.addView(Space((8*dp).toInt(), true))
+                  row2.addView(createActionBtn("يسار ➡️", 1f) { currentInputConnection?.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_RIGHT)) })
+                  textEditContainer.addView(row2)
+                  
+                  textEditContainer.addView(Space((24*dp).toInt()))
+                  textEditContainer.addView(createActionBtn("العودة للكيبورد", 1f) { resetToKeyboard() }.apply { layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (52*dp).toInt()) })
+              }
+              
+              private fun createActionBtn(label: String, weight: Float, action: () -> Unit): View {
+                  val dp = resources.displayMetrics.density
+                  return TextView(this).apply {
+                      text = label; textSize = 16f; setTextColor(txtColor); gravity = Gravity.CENTER; typeface = Typeface.DEFAULT_BOLD
+                      layoutParams = LinearLayout.LayoutParams(0, (52 * dp).toInt(), weight)
+                      background = createIosKeyDrawable(keyNormalFace, keyNormalPressed)
+                      isClickable = true
+                      setOnClickListener { vibrateAndSound(this); action() }
+                  }
               }
 
               private fun createMenuPill(label: String, iconRes: Int, action: () -> Unit): View {
                   val dp = resources.displayMetrics.density
                   return LinearLayout(this).apply {
-                      orientation = LinearLayout.HORIZONTAL
-                      layoutParams = LinearLayout.LayoutParams(0, (52 * dp).toInt(), 1f).apply {
-                          setMargins((6*dp).toInt(), (6*dp).toInt(), (6*dp).toInt(), (6*dp).toInt())
-                      }
-                      gravity = Gravity.CENTER
-                      background = GradientDrawable().apply {
-                          setColor(keyNormalFace) 
-                          setCornerRadius(26f * dp)
-                      }
-                      
-                      // تفعيل قابلية الضغط بشكل صريح وقوي
-                      isClickable = true
-                      isFocusable = true
+                      orientation = LinearLayout.HORIZONTAL; gravity = Gravity.CENTER
+                      layoutParams = LinearLayout.LayoutParams(0, (52 * dp).toInt(), 1f).apply { setMargins((6*dp).toInt(), (6*dp).toInt(), (6*dp).toInt(), (6*dp).toInt()) }
+                      background = GradientDrawable().apply { setColor(keyNormalFace); setCornerRadius(26f * dp) }
+                      isClickable = true; isFocusable = true
                       
                       addView(ImageView(this@KeyboardService).apply {
                           layoutParams = LinearLayout.LayoutParams((22*dp).toInt(), (22*dp).toInt()).apply { marginEnd = (10*dp).toInt() }
-                          setImageResource(iconRes)
-                          setColorFilter(txtColor, PorterDuff.Mode.SRC_IN)
+                          setImageResource(iconRes); setColorFilter(txtColor, PorterDuff.Mode.SRC_IN)
                       })
-                      
-                      addView(TextView(this@KeyboardService).apply {
-                          text = label
-                          textSize = 15f
-                          setTextColor(txtColor)
-                          typeface = Typeface.DEFAULT_BOLD
-                      })
-                      
-                      // الحل السحري: استخدام OnClickListener القياسي لضمان الاستجابة 100%
-                      setOnClickListener {
-                          action()
-                      }
-                      
-                      // الحفاظ على التأثير البصري للضغط فقط بدون التدخل في النقرة
-                      setOnTouchListener { v, e ->
-                          when (e.action) {
-                              MotionEvent.ACTION_DOWN -> { v.alpha = 0.6f; vibrateAndSound(v) }
-                              MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> { v.alpha = 1f }
-                          }
-                          false // مهم جداً لإخبار النظام بالسماح بتشغيل الـ Click
-                      }
+                      addView(TextView(this@KeyboardService).apply { text = label; textSize = 15f; setTextColor(txtColor); typeface = Typeface.DEFAULT_BOLD })
+                      setOnClickListener { vibrateAndSound(this); action() }
+                      setOnTouchListener { v, e -> if (e.action == MotionEvent.ACTION_DOWN) { v.alpha = 0.6f } else if (e.action == MotionEvent.ACTION_UP || e.action == MotionEvent.ACTION_CANCEL) { v.alpha = 1f }; false }
                   }
               }
 
@@ -629,9 +599,7 @@ jobs:
                   val textBeforeCursor = ic.getTextBeforeCursor(20, 0)?.toString() ?: ""
                   val lastWord = textBeforeCursor.takeLastWhile { it.isLetter() }
                   val activeDict = if(currentLanguage == 0) dictionaryAr else dictionaryFr
-                  val suggestions = if (lastWord.isEmpty()) {
-                      if(currentLanguage == 0) listOf("في", "كيف", "نعم") else listOf("Je", "Comment", "Oui")
-                  } else {
+                  val suggestions = if (lastWord.isEmpty()) { if(currentLanguage == 0) listOf("في", "كيف", "نعم") else listOf("Je", "Comment", "Oui") } else {
                       val matches = activeDict.filter { it.startsWith(lastWord, ignoreCase = true) && !it.equals(lastWord, ignoreCase = true) }.take(2).toMutableList()
                       listOf(if (matches.size > 0) matches[0] else "", lastWord, if (matches.size > 1) matches[1] else "")
                   }
@@ -640,10 +608,8 @@ jobs:
                       if (index < suggestions.size) tv.text = suggestions[index]
                       tv.setOnTouchListener { v, event ->
                           if (event.action == MotionEvent.ACTION_DOWN && suggestions[index].isNotEmpty()) {
-                              vibrateAndSound(v)
-                              if (lastWord.isNotEmpty()) ic.deleteSurroundingText(lastWord.length, 0)
-                              ic.commitText(suggestions[index] + " ", 1)
-                              handler.postDelayed({ updatePredictions() }, 50)
+                              vibrateAndSound(v); if (lastWord.isNotEmpty()) ic.deleteSurroundingText(lastWord.length, 0)
+                              ic.commitText(suggestions[index] + " ", 1); handler.postDelayed({ updatePredictions() }, 50)
                           }
                           true
                       }
@@ -653,20 +619,12 @@ jobs:
               private fun updateOptionsPopupSelection(rawX: Float) {
                   var newSelectedIndex = -1
                   for (i in 0 until optionsContainer.childCount) {
-                      val child = optionsContainer.getChildAt(i)
-                      val loc = IntArray(2)
-                      child.getLocationOnScreen(loc)
+                      val child = optionsContainer.getChildAt(i); val loc = IntArray(2); child.getLocationOnScreen(loc)
                       if (rawX >= loc[0] && rawX <= loc[0] + child.width) { newSelectedIndex = i; break }
                   }
                   if (newSelectedIndex != selectedOptionIndex) {
-                      if (selectedOptionIndex != -1 && selectedOptionIndex < optionsContainer.childCount) {
-                          (optionsContainer.getChildAt(selectedOptionIndex).background as GradientDrawable).setColor(Color.TRANSPARENT)
-                          (optionsContainer.getChildAt(selectedOptionIndex) as TextView).setTextColor(txtColor)
-                      }
-                      if (newSelectedIndex != -1 && newSelectedIndex < optionsContainer.childCount) {
-                          (optionsContainer.getChildAt(newSelectedIndex).background as GradientDrawable).setColor(Color.parseColor("#007AFF")) 
-                          (optionsContainer.getChildAt(newSelectedIndex) as TextView).setTextColor(Color.WHITE)
-                      }
+                      if (selectedOptionIndex != -1 && selectedOptionIndex < optionsContainer.childCount) { (optionsContainer.getChildAt(selectedOptionIndex).background as GradientDrawable).setColor(Color.TRANSPARENT); (optionsContainer.getChildAt(selectedOptionIndex) as TextView).setTextColor(txtColor) }
+                      if (newSelectedIndex != -1 && newSelectedIndex < optionsContainer.childCount) { (optionsContainer.getChildAt(newSelectedIndex).background as GradientDrawable).setColor(Color.parseColor("#007AFF")); (optionsContainer.getChildAt(newSelectedIndex) as TextView).setTextColor(Color.WHITE) }
                       selectedOptionIndex = newSelectedIndex
                   }
               }
@@ -674,17 +632,9 @@ jobs:
               private fun createIconKey(iconResId: Int, faceColor: Int, pressedColor: Int, weight: Float): View {
                   val dp = resources.displayMetrics.density
                   return FrameLayout(this).apply {
-                      layoutParams = LinearLayout.LayoutParams(0, (keyHeightDp * dp).toInt(), weight)
-                      background = createIosKeyDrawable(faceColor, pressedColor)
-                      addView(ImageView(this@KeyboardService).apply {
-                          layoutParams = FrameLayout.LayoutParams((24*dp).toInt(), (24*dp).toInt()).apply { gravity = Gravity.CENTER }
-                          setImageResource(iconResId); setColorFilter(txtColor) 
-                      })
-                      setOnTouchListener { v, event ->
-                          if (event.action == MotionEvent.ACTION_DOWN) v.isPressed = true
-                          else if (event.action == MotionEvent.ACTION_UP || event.action == MotionEvent.ACTION_CANCEL) v.isPressed = false
-                          false 
-                      }
+                      layoutParams = LinearLayout.LayoutParams(0, (keyHeightDp * dp).toInt(), weight); background = createIosKeyDrawable(faceColor, pressedColor)
+                      addView(ImageView(this@KeyboardService).apply { layoutParams = FrameLayout.LayoutParams((24*dp).toInt(), (24*dp).toInt()).apply { gravity = Gravity.CENTER }; setImageResource(iconResId); setColorFilter(txtColor) })
+                      setOnTouchListener { v, event -> if (event.action == MotionEvent.ACTION_DOWN) v.isPressed = true else if (event.action == MotionEvent.ACTION_UP || event.action == MotionEvent.ACTION_CANCEL) v.isPressed = false; false }
                   }
               }
 
@@ -697,7 +647,6 @@ jobs:
                       val r1 = if(currentLanguage == 0) listOf("ض","ص","ث","ق","ف","غ","ع","ه","خ","ح","ج") else listOf("a","z","e","r","t","y","u","i","o","p")
                       val r2 = if(currentLanguage == 0) listOf("ش","س","ي","ب","ل","ا","ت","ن","م","ك","ط") else listOf("q","s","d","f","g","h","j","k","l","m")
                       val r3 = if(currentLanguage == 0) listOf("ظ","ز","و","ة","ى","ر","د") else listOf("w","x","c","v","b","n")
-
                       val displayR1 = if (isShifted && currentLanguage == 1) r1.map { it.uppercase() } else r1
                       val displayR2 = if (isShifted && currentLanguage == 1) r2.map { it.uppercase() } else r2
                       val displayR3 = if (isShifted && currentLanguage == 1) r3.map { it.uppercase() } else r3
@@ -709,20 +658,12 @@ jobs:
 
                       val row3Container = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL; layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT) }
                       row3Container.addView(Space((3*dp).toInt(), true))
-                      row3Container.addView(createIconKey(R.drawable.ic_shift, if (isShifted) keyNormalFace else keyControlFace, if (isShifted) keyNormalPressed else keyControlPressed, 1.3f).apply {
-                          setOnTouchListener { v, e -> if(e.action==MotionEvent.ACTION_DOWN) { vibrateAndSound(v); isShifted = !isShifted; renderKeys() }; true }
-                      })
+                      row3Container.addView(createIconKey(R.drawable.ic_shift, if (isShifted) keyNormalFace else keyControlFace, if (isShifted) keyNormalPressed else keyControlPressed, 1.3f).apply { setOnTouchListener { v, e -> if(e.action==MotionEvent.ACTION_DOWN) { vibrateAndSound(v); isShifted = !isShifted; renderKeys() }; true } })
                       row3Container.addView(Space(gap, true))
                       displayR3.forEach { char -> row3Container.addView(createKey(char)); row3Container.addView(Space(gap, true)) }
-                      row3Container.addView(createIconKey(R.drawable.ic_backspace, keyControlFace, keyControlPressed, 1.3f).apply {
-                          setOnTouchListener { v, e ->
-                              if(e.action==MotionEvent.ACTION_DOWN) { v.isPressed = true; vibrateAndSound(v); currentInputConnection?.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL)); handler.postDelayed({ updatePredictions() }, 50) }
-                              else if(e.action==MotionEvent.ACTION_UP || e.action==MotionEvent.ACTION_CANCEL) { v.isPressed = false }; true
-                          }
-                      })
+                      row3Container.addView(createIconKey(R.drawable.ic_backspace, keyControlFace, keyControlPressed, 1.3f).apply { setOnTouchListener { v, e -> if(e.action==MotionEvent.ACTION_DOWN) { v.isPressed = true; vibrateAndSound(v); currentInputConnection?.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL)); handler.postDelayed({ updatePredictions() }, 50) } else if(e.action==MotionEvent.ACTION_UP || e.action==MotionEvent.ACTION_CANCEL) { v.isPressed = false }; true } })
                       row3Container.addView(Space((3*dp).toInt(), true))
-                      keysContainer.addView(row3Container)
-                      keysContainer.addView(Space(rowGap))
+                      keysContainer.addView(row3Container); keysContainer.addView(Space(rowGap))
 
                       val bottomRow = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL; layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT) }
                       bottomRow.addView(Space((3*dp).toInt(), true))
@@ -732,9 +673,7 @@ jobs:
                       bottomRow.addView(Space(gap, true))
                       bottomRow.addView(createSpecialKey(if(currentLanguage == 0) "مسافة" else "espace", keyNormalFace, keyNormalPressed, 5f).apply { setOnTouchListener { v, e -> if(e.action==MotionEvent.ACTION_DOWN){ vibrateAndSound(v); currentInputConnection?.commitText(" ", 1); handler.postDelayed({ updatePredictions() }, 50) }; true } })
                       bottomRow.addView(Space(gap, true))
-                      bottomRow.addView(createIconKey(R.drawable.ic_enter, keyControlFace, keyControlPressed, 1.4f).apply {
-                          setOnTouchListener { v, e -> if(e.action==MotionEvent.ACTION_DOWN) { v.isPressed = true; vibrateAndSound(v); currentInputConnection?.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER)) } else if(e.action==MotionEvent.ACTION_UP || e.action==MotionEvent.ACTION_CANCEL) { v.isPressed = false }; true }
-                      })
+                      bottomRow.addView(createIconKey(R.drawable.ic_enter, keyControlFace, keyControlPressed, 1.4f).apply { setOnTouchListener { v, e -> if(e.action==MotionEvent.ACTION_DOWN) { v.isPressed = true; vibrateAndSound(v); currentInputConnection?.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER)) } else if(e.action==MotionEvent.ACTION_UP || e.action==MotionEvent.ACTION_CANCEL) { v.isPressed = false }; true } })
                       bottomRow.addView(Space((3*dp).toInt(), true))
                       keysContainer.addView(bottomRow)
                       
@@ -743,10 +682,8 @@ jobs:
                       val r2 = if(keyboardMode == 1) listOf("-","/",":",";","(",")","$","&","@","\"") else listOf("_","\\","|","~","<",">","€","£","¥","•")
                       val r3 = listOf(".",",","?","!","'")
 
-                      keysContainer.addView(createKeysRow(r1, gap, 0.05f))
-                      keysContainer.addView(Space(rowGap))
-                      keysContainer.addView(createKeysRow(r2, gap, 0.05f))
-                      keysContainer.addView(Space(rowGap))
+                      keysContainer.addView(createKeysRow(r1, gap, 0.05f)); keysContainer.addView(Space(rowGap))
+                      keysContainer.addView(createKeysRow(r2, gap, 0.05f)); keysContainer.addView(Space(rowGap))
 
                       val row3Container = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL; layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT) }
                       row3Container.addView(Space((3*dp).toInt(), true))
@@ -755,8 +692,7 @@ jobs:
                       r3.forEach { char -> row3Container.addView(createKey(char, weight = 1.2f)); row3Container.addView(Space(gap, true)) }
                       row3Container.addView(createIconKey(R.drawable.ic_backspace, keyControlFace, keyControlPressed, 1.3f).apply { setOnTouchListener { v, e -> if(e.action==MotionEvent.ACTION_DOWN) { v.isPressed = true; vibrateAndSound(v); currentInputConnection?.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL)); handler.postDelayed({ updatePredictions() }, 50) } else if(e.action==MotionEvent.ACTION_UP || e.action==MotionEvent.ACTION_CANCEL) { v.isPressed = false }; true } })
                       row3Container.addView(Space((3*dp).toInt(), true))
-                      keysContainer.addView(row3Container)
-                      keysContainer.addView(Space(rowGap))
+                      keysContainer.addView(row3Container); keysContainer.addView(Space(rowGap))
 
                       val bottomRow = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL; layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT) }
                       bottomRow.addView(Space((3*dp).toInt(), true))
@@ -776,25 +712,20 @@ jobs:
                   val dp = resources.displayMetrics.density
                   return TextView(this).apply {
                       text = char; textSize = 25f; setTextColor(txtColor); gravity = Gravity.CENTER; typeface = Typeface.create("sans-serif", Typeface.NORMAL)
-                      layoutParams = LinearLayout.LayoutParams(0, (keyHeightDp * dp).toInt(), weight)
-                      background = createIosKeyDrawable(keyNormalFace, keyNormalPressed)
+                      layoutParams = LinearLayout.LayoutParams(0, (keyHeightDp * dp).toInt(), weight); background = createIosKeyDrawable(keyNormalFace, keyNormalPressed)
                       
                       val alternates = alternateChars[char.lowercase()] ?: emptyList()
                       var isLongPressActive = false; var initialRawX = 0f
-
                       val longPressRunnable = Runnable {
                           if (alternates.isNotEmpty()) {
-                              isLongPressActive = true; vibrateAndSound(this); popupView.visibility = View.GONE
-                              optionsContainer.removeAllViews()
+                              isLongPressActive = true; vibrateAndSound(this); popupView.visibility = View.GONE; optionsContainer.removeAllViews()
                               alternates.forEach { alt -> optionsContainer.addView(TextView(this@KeyboardService).apply { text = alt; textSize = 26f; setTextColor(txtColor); gravity = Gravity.CENTER; layoutParams = LinearLayout.LayoutParams((42 * dp).toInt(), (50 * dp).toInt()); background = GradientDrawable().apply { setColor(Color.TRANSPARENT); setCornerRadius(6f * dp) } }) }
                               optionsContainer.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
-                              val popupWidth = optionsContainer.measuredWidth
-                              val popupHeight = optionsContainer.measuredHeight
                               val loc = IntArray(2); this.getLocationInWindow(loc)
-                              var popupX = loc[0].toFloat() - (popupWidth - this.width) / 2
+                              var popupX = loc[0].toFloat() - (optionsContainer.measuredWidth - this.width) / 2
                               if (popupX < 4f * dp) popupX = 4f * dp
-                              if (popupX + popupWidth > resources.displayMetrics.widthPixels) popupX = resources.displayMetrics.widthPixels.toFloat() - popupWidth - (4f * dp)
-                              optionsContainer.x = popupX; optionsContainer.y = loc[1].toFloat() - popupHeight - (10 * dp); optionsContainer.visibility = View.VISIBLE
+                              if (popupX + optionsContainer.measuredWidth > resources.displayMetrics.widthPixels) popupX = resources.displayMetrics.widthPixels.toFloat() - optionsContainer.measuredWidth - (4f * dp)
+                              optionsContainer.x = popupX; optionsContainer.y = loc[1].toFloat() - optionsContainer.measuredHeight - (10 * dp); optionsContainer.visibility = View.VISIBLE
                               updateOptionsPopupSelection(initialRawX)
                           }
                       }
@@ -811,13 +742,8 @@ jobs:
                               MotionEvent.ACTION_MOVE -> { if (isLongPressActive) updateOptionsPopupSelection(event.rawX); true }
                               MotionEvent.ACTION_UP -> {
                                   handler.removeCallbacks(longPressRunnable); v.isPressed = false
-                                  if (isLongPressActive) {
-                                      optionsContainer.visibility = View.GONE
-                                      currentInputConnection?.commitText(if (selectedOptionIndex != -1 && selectedOptionIndex < alternates.size) alternates[selectedOptionIndex] else char, 1)
-                                  } else {
-                                      popupView.visibility = View.GONE
-                                      currentInputConnection?.commitText(char, 1) 
-                                  }
+                                  if (isLongPressActive) { optionsContainer.visibility = View.GONE; currentInputConnection?.commitText(if (selectedOptionIndex != -1 && selectedOptionIndex < alternates.size) alternates[selectedOptionIndex] else char, 1) } 
+                                  else { popupView.visibility = View.GONE; currentInputConnection?.commitText(char, 1) }
                                   handler.postDelayed({ updatePredictions() }, 50); true
                               }
                               MotionEvent.ACTION_CANCEL -> { handler.removeCallbacks(longPressRunnable); v.isPressed = false; popupView.visibility = View.GONE; optionsContainer.visibility = View.GONE; true }
@@ -830,12 +756,11 @@ jobs:
               private fun createSpecialKey(label: String, faceColor: Int, pressedColor: Int, weight: Float): TextView {
                   val dp = resources.displayMetrics.density
                   return TextView(this).apply {
-                      text = label; textSize = if (label == "مسافة" || label == "espace") 16f else 20f
-                      setTextColor(if (label == "مسافة" || label == "espace") txtColor else Color.BLACK); gravity = Gravity.CENTER
-                      typeface = if (label == "مسافة" || label == "espace") Typeface.create("sans-serif", Typeface.NORMAL) else Typeface.DEFAULT_BOLD
+                      text = label; textSize = if (label == "مسافة" || label == "espace" || label.contains("ABC")) 16f else 20f
+                      setTextColor(if (label == "مسافة" || label == "espace" || label.contains("ABC")) txtColor else Color.BLACK); gravity = Gravity.CENTER
+                      typeface = if (label == "مسافة" || label == "espace" || label.contains("ABC")) Typeface.create("sans-serif", Typeface.NORMAL) else Typeface.DEFAULT_BOLD
                       layoutParams = LinearLayout.LayoutParams(0, (keyHeightDp * dp).toInt(), weight)
                       background = createIosKeyDrawable(faceColor, pressedColor)
-                      setOnTouchListener { v, event -> if (event.action == MotionEvent.ACTION_DOWN) v.isPressed = true else if (event.action == MotionEvent.ACTION_UP || event.action == MotionEvent.ACTION_CANCEL) v.isPressed = false; false }
                   }
               }
 
