@@ -1,4 +1,4 @@
-name: Build AI Keyboard Pro (V42 Ultimate Gboard Menu)
+name: Build AI Keyboard Pro (V43 Perfect Menu Fix)
 
 on:
   push:
@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   build-apk:
-    name: Generate iOS Clone Keyboard V42
+    name: Generate iOS Clone Keyboard V43
     runs-on: ubuntu-latest
 
     steps:
@@ -59,7 +59,7 @@ jobs:
           android {
               namespace = "com.aikeyboard.pro"
               compileSdk = 34
-              defaultConfig { applicationId = "com.aikeyboard.pro"; minSdk = 28; targetSdk = 34; versionCode = 42; versionName = "42.0.0" }
+              defaultConfig { applicationId = "com.aikeyboard.pro"; minSdk = 28; targetSdk = 34; versionCode = 43; versionName = "43.0.0" }
               compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
               kotlinOptions { jvmTarget = "17" }
           }
@@ -74,7 +74,7 @@ jobs:
           cat << 'EOF' > app/src/main/res/values/strings.xml
           <resources>
               <string name="app_name">Keyboard Pro iOS</string>
-              <string name="ime_name">iOS Keyboard V42</string>
+              <string name="ime_name">iOS Keyboard V43</string>
           </resources>
           EOF
 
@@ -263,7 +263,7 @@ jobs:
           </input-method>
           EOF
 
-          # 🔥 تحديث الكيبورد: إضافة قائمة الإعدادات الداخلية مع تحسين الاستقرار 🔥
+          # 🔥 تحديث الكيبورد (V43) الأزرار تعمل بامتياز مع الإخفاء التلقائي 🔥
           cat << 'EOF' > app/src/main/java/com/aikeyboard/pro/KeyboardService.kt
           package com.aikeyboard.pro
 
@@ -271,6 +271,7 @@ jobs:
           import android.content.Intent
           import android.content.res.Configuration
           import android.graphics.Color
+          import android.graphics.PorterDuff
           import android.graphics.Typeface
           import android.graphics.drawable.GradientDrawable
           import android.graphics.drawable.LayerDrawable
@@ -366,15 +367,16 @@ jobs:
                       keyHeightDp = newHeight
                       if (::keysContainer.isInitialized) renderKeys()
                   }
-                  
-                  // 🔥 ضمان رجوع الكيبورد للوضع الطبيعي إذا تم فتحه من جديد
-                  if (::keysContainer.isInitialized && ::menuContainer.isInitialized) {
+                  resetMenu()
+                  handler.post { updatePredictions() }
+              }
+
+              private fun resetMenu() {
+                  if (::menuContainer.isInitialized && ::keysContainer.isInitialized && ::settingsIcon.isInitialized) {
                       menuContainer.visibility = View.GONE
                       keysContainer.visibility = View.VISIBLE
                       settingsIcon.text = "⚙️"
                   }
-                  
-                  handler.post { updatePredictions() }
               }
 
               override fun onCreateInputView(): View {
@@ -411,7 +413,6 @@ jobs:
                       gravity = Gravity.CENTER_VERTICAL
                   }
                   
-                  // 🔥 زر الإعدادات الجديد الذي يفتح القائمة الداخلية 🔥
                   predictionContainer.addView(TextView(this).apply {
                       text = "⚙️"
                       textSize = 20f
@@ -427,9 +428,7 @@ jobs:
                                   menuContainer.visibility = View.VISIBLE
                                   text = "✖️"
                               } else {
-                                  menuContainer.visibility = View.GONE
-                                  keysContainer.visibility = View.VISIBLE
-                                  text = "⚙️"
+                                  resetMenu()
                               }
                           }
                           true 
@@ -471,7 +470,6 @@ jobs:
                   rootLayout.addView(predictionContainer)
                   rootLayout.addView(View(this).apply { layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (1*dp).toInt()); setBackgroundColor(Color.parseColor("#33898A8D")) })
                   
-                  // منطقة الحروف الأساسية
                   keysContainer = LinearLayout(this).apply {
                       orientation = LinearLayout.VERTICAL
                       layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
@@ -479,7 +477,6 @@ jobs:
                   }
                   rootLayout.addView(keysContainer)
                   
-                  // 🔥 منطقة قائمة الإعدادات الداخلية (مخفية بالوضع الافتراضي) 🔥
                   menuContainer = LinearLayout(this).apply {
                       orientation = LinearLayout.VERTICAL
                       layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
@@ -520,7 +517,7 @@ jobs:
                   return absoluteRoot
               }
               
-              // 🔥 بناء كروت الإعدادات الداخلية 🔥
+              // 🔥 بناء القائمة (الإصدار المعالج بذكاء - أزرار تعمل بنسبة 100%) 🔥
               private fun buildMenuRows() {
                   menuContainer.removeAllViews()
                   val dp = resources.displayMetrics.density
@@ -529,9 +526,12 @@ jobs:
                   row1.addView(createMenuPill("تغيير الحجم", R.drawable.ic_resize) {
                       val intent = Intent(this@KeyboardService, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                       startActivity(intent)
+                      requestHideSelf(0) // إخفاء الكيبورد ليظهر التطبيق!
+                      resetMenu()
                   })
                   row1.addView(createMenuPill("ترجمة", R.drawable.ic_translate) {
-                      Toast.makeText(this@KeyboardService, "سيتم التفعيل في التحديث القادم 🚀", Toast.LENGTH_SHORT).show()
+                      Toast.makeText(this@KeyboardService, "ميزة الترجمة قادمة قريباً 🚀", Toast.LENGTH_SHORT).show()
+                      resetMenu()
                   })
                   menuContainer.addView(row1)
                   
@@ -539,18 +539,23 @@ jobs:
                   row2.addView(createMenuPill("المظهر", R.drawable.ic_theme) {
                       val intent = Intent(this@KeyboardService, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                       startActivity(intent)
+                      requestHideSelf(0) // إخفاء الكيبورد ليظهر التطبيق!
+                      resetMenu()
                   })
                   row2.addView(createMenuPill("رموز الإيموجي", R.drawable.ic_emoji) {
-                      Toast.makeText(this@KeyboardService, "سيتم التفعيل في التحديث القادم 🚀", Toast.LENGTH_SHORT).show()
+                      Toast.makeText(this@KeyboardService, "الإيموجي قريباً 🚀", Toast.LENGTH_SHORT).show()
+                      resetMenu()
                   })
                   menuContainer.addView(row2)
                   
                   val row3 = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
                   row3.addView(createMenuPill("تعديل النص", R.drawable.ic_text_edit) {
-                      Toast.makeText(this@KeyboardService, "سيتم التفعيل في التحديث القادم 🚀", Toast.LENGTH_SHORT).show()
+                      Toast.makeText(this@KeyboardService, "تعديل النص قريباً 🚀", Toast.LENGTH_SHORT).show()
+                      resetMenu()
                   })
                   row3.addView(createMenuPill("الملاحظات", R.drawable.ic_notes) {
-                      Toast.makeText(this@KeyboardService, "سيتم التفعيل في التحديث القادم 🚀", Toast.LENGTH_SHORT).show()
+                      Toast.makeText(this@KeyboardService, "الملاحظات قريباً 🚀", Toast.LENGTH_SHORT).show()
+                      resetMenu()
                   })
                   menuContainer.addView(row3)
               }
@@ -568,10 +573,14 @@ jobs:
                           setCornerRadius(26f * dp)
                       }
                       
+                      // تفعيل قابلية الضغط بشكل صريح وقوي
+                      isClickable = true
+                      isFocusable = true
+                      
                       addView(ImageView(this@KeyboardService).apply {
                           layoutParams = LinearLayout.LayoutParams((22*dp).toInt(), (22*dp).toInt()).apply { marginEnd = (10*dp).toInt() }
                           setImageResource(iconRes)
-                          setColorFilter(txtColor)
+                          setColorFilter(txtColor, PorterDuff.Mode.SRC_IN)
                       })
                       
                       addView(TextView(this@KeyboardService).apply {
@@ -581,15 +590,18 @@ jobs:
                           typeface = Typeface.DEFAULT_BOLD
                       })
                       
+                      // الحل السحري: استخدام OnClickListener القياسي لضمان الاستجابة 100%
+                      setOnClickListener {
+                          action()
+                      }
+                      
+                      // الحفاظ على التأثير البصري للضغط فقط بدون التدخل في النقرة
                       setOnTouchListener { v, e ->
-                          if(e.action == MotionEvent.ACTION_DOWN) {
-                              v.alpha = 0.6f
-                              vibrateAndSound(v)
-                          } else if(e.action == MotionEvent.ACTION_UP || e.action == MotionEvent.ACTION_CANCEL) {
-                              v.alpha = 1f
-                              if(e.action == MotionEvent.ACTION_UP) action()
+                          when (e.action) {
+                              MotionEvent.ACTION_DOWN -> { v.alpha = 0.6f; vibrateAndSound(v) }
+                              MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> { v.alpha = 1f }
                           }
-                          true
+                          false // مهم جداً لإخبار النظام بالسماح بتشغيل الـ Click
                       }
                   }
               }
